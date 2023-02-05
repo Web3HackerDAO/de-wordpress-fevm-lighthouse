@@ -1,60 +1,31 @@
----
-contractAddress: 0xC7ce19577C040f9807f0Fdf1C7c64eEea5c137bB
-basicPrice: 0.0001
-description: "The article will guide you to make your blog to be a NFT that content store on IPFS.Step. 1: Write your blogCreate your new blog articl in the blog folder.Step. 2: Generate blog IPFS CIDnode generateCID.jsThis command will publish your blog article on to IPFS and auto generate new blog article's CID and store them into the data.json.You can find your blog article's CID and copy it into your article's frontmatter field"
-title: Guide you to create a NFT for your blog
-imageCID: bafkreicp4smgidzdwbc7hazo43dvnopxmwlajjjcjvsfl574d5pq5vd64e
-contentCID: bafkreiex7aahucycag35k7ejx2vnqpl7teda4jrjkhwvga4ttgljqrvn64
----
+# How to create your own Web3 WordPress Site?
 
-# Guide you to create a NFT for your blog
+The article will guide you to create your own Web3 WordPress site with token gating feature that power by the cool `lighthouse` SDK.
 
-The article will guide you to make your blog to be a NFT that content store on IPFS.
+Every blog post/page of your site can be setup a `pay` price that only user mint enough NFT can see the encrypted content(which encrypted by lighthouse sdk), otherwise, only see the excerpt of the current page.
 
-## Step. 1: Write your blog
+## Step. 1: Connect Wallet
 
-Create your new blog articl in the blog folder.
+<BtnConnectWallet />
 
-## Step. 2: Generate blog NFT image and content IPFS CID
+## Step. 2: Create your new novel
 
-```sh
-node generateCID.js
-```
+<BtnNewNovel />
 
-This command will publish your blog article on to IPFS and auto generate new blog article's CID and store them into the `data.json`.
+## Step. 3: Write your novel chapter in locked-content folder
 
-You can find your blog article's CID and copy it into your article's `frontmatter` field
-
-```md
----
-contractAddress: xxxx
-imageCID: yyyy
-contentCID: zzzz
----
-
-```
-
-## Step. 3: CreateToken for your new blog article
+## Step. 4: Encrypted your whole novel chapters via web3 and store on IPFS
 
 ```sh
-npm run dev
+node generateEncryptedNovel.js
 ```
 
-Navigate to your blog page, and you will find the `CreateToken` button on the right sidebar.
+This command will encrypt your novel and store them on to IPFS.
 
-Click it will show a dialog and input the field you missing then click `submit` button.
+All metadata will auto generate and put them into the docs/$yourNovelFolder, no-worry! As it only include the expert part!
 
-Add the `CreateToken` result into your blog article's `frontmatter` field.
+The docs folder will be publish after the vitepress deployed.
 
-```md
----
-contractAddress: xxxx
-CID: yyyy
-tokenId: zzzz
----
+## Step. 5: Deploy your vitepress site and with token gating feature
 
-```
-
-## Step. 4: Your reader can mint the article NFT to support you
-
-Your reader now can see the `mint nft` button after they `connect wallet` on the right sidebar.
+## Step. 6: Your reader can mint the novel's NFT to support you that can unlock your novel chapters

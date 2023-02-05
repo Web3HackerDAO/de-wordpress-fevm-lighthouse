@@ -1,4 +1,10 @@
 import path from 'path'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { HeadlessUiResolver } from 'unplugin-vue-components/resolvers'
+import nodePolyfills from 'rollup-plugin-polyfill-node'
 
 export default {
   title: 'SellX3',
@@ -17,6 +23,31 @@ export default {
   },
   vue: {
     reactivityTransform:  path.resolve(__dirname, 'theme'),
+  },
+  vite: {
+    define: {
+      'process.env': {},
+      global: {},
+    },
+    plugins: [
+      nodePolyfills({
+        include: ['node_modules/**/*.js', new RegExp('node_modules/.vite/.*js')],
+      }),
+      Components({
+        resolvers: [
+          IconsResolver({
+            prefix: false,
+            // enabledCollections: ['carbon']
+          }),
+          HeadlessUiResolver({ prefix: '' }),
+        ],
+        dts: '../components.d.ts',
+      }),
+      Icons(),
+    ],
+    build: {
+      transpile: ['@heroicons/vue']
+    }
   },
   themeConfig: {
     logo: '/logo.png',

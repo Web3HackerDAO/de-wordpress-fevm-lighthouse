@@ -2,9 +2,10 @@ import { init, useOnboard } from '@web3-onboard/vue'
 import injectedModule from '@web3-onboard/injected-wallets'
 import { ethers } from "ethers";
 import { CHAIN_CONTRACT_MAP, CHAIN_CONTRACT_ABI_MAP } from '../web3/CHAIN'
+import { defaultChainId as chainId } from '../const.js'
 
+console.log('====> chainId :', chainId)
 // const chainId = 31415
-const chainId = '0x7ab7'
 init({
   wallets: [injectedModule()],
   accountCenter: {
@@ -21,27 +22,33 @@ init({
   },
   chains: [
     {
-      id: chainId,
-      token: 'tFIL',
-      label: 'Filecoin - Wallaby testnet',
-      rpcUrl: 'https://wallaby.node.glif.io/rpc/v1',
-      blockExplorerUrl: 'https://wallaby.filfox.info'
-    }
+      id: '0x61',
+      token: 'tBNB',
+      label: 'BSC testnet',
+      rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
+      blockExplorerUrl: 'https://testnet.bscscan.com/'
+    },
+    {
+      id: '0x7a69',
+      token: 'tETH',
+      label: 'Hardhat',
+      rpcUrl: 'http://127.0.0.1:8545/',
+      blockExplorerUrl: 'http://127.0.0.1:8545/'
+    },
   ]
 })
 
 export const parseEther = val => ethers.utils.parseEther(val)
 
-
 export const useWeb3Auth = () => {
-  const { connectWallet, connectingWallet, setChain, connectedChain, connectedWallet } = $(useOnboard())
-
+  const { connectWallet, connectingWallet, setChain, settingChain, connectedChain, connectedWallet, disconnectConnectedWallet } = $(useOnboard())
   const doConnect = async () => {
     if (connectingWallet) return
 
     await connectWallet()
     await setChain({ chainId })
   }
+
 
   const ethersProvider = $computed(() => {
     if (!connectedWallet) {
@@ -58,9 +65,14 @@ export const useWeb3Auth = () => {
     return ethersProvider.provider.selectedAddress
   })
 
-  const initContract = (key, isWrite = false) => {
+  const getContractInfo = key => {
     const contractAddress = CHAIN_CONTRACT_MAP[key][chainId]
     const contractAbi = CHAIN_CONTRACT_ABI_MAP[key]
+    return { contractAddress, contractAbi, chainId }
+  }
+
+  const initContract = (key, isWrite = false) => {
+    const { contractAddress, contractAbi } = getContractInfo(key)
 
     if (!isWrite)
       return new ethers.Contract(contractAddress, contractAbi, ethersProvider);
@@ -81,10 +93,14 @@ export const useWeb3Auth = () => {
 
   return $$({
     parseEther,
+    getContractInfo,
     connectedChain,
     connectedWallet,
+    connectingWallet,
+    settingChain,
     walletAddress,
     doConnect,
+    disconnectConnectedWallet,
     initContract,
   })
 };

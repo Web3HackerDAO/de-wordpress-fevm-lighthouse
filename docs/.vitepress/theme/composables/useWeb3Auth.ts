@@ -21,20 +21,20 @@ init({
     }
   },
   chains: [
-    {
-      id: '0x61',
-      token: 'tBNB',
-      label: 'BSC testnet',
-      rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
-      blockExplorerUrl: 'https://testnet.bscscan.com/'
-    },
-    {
-      id: '0x7a69',
-      token: 'tETH',
-      label: 'Hardhat',
-      rpcUrl: 'http://127.0.0.1:8545/',
-      blockExplorerUrl: 'http://127.0.0.1:8545/'
-    },
+    // {
+    //   id: '0x61',
+    //   token: 'tBNB',
+    //   label: 'BSC testnet',
+    //   rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
+    //   blockExplorerUrl: 'https://testnet.bscscan.com/'
+    // },
+    // {
+    //   id: '0x7a69',
+    //   token: 'tETH',
+    //   label: 'Hardhat',
+    //   rpcUrl: 'http://127.0.0.1:8545/',
+    //   blockExplorerUrl: 'http://127.0.0.1:8545/'
+    // },
     {
       id: '0xc45',
       token: 'tFIL',
@@ -61,13 +61,14 @@ export const useWeb3Auth = () => {
     if (!connectedWallet) {
       return null
     }
+    console.log('====> connectedWallet.provider :', connectedWallet.provider)
     return new ethers.providers.Web3Provider(
       connectedWallet.provider,
       'any'
     )
   })
 
-  const signer = $computed(() => ethersProvider.getSigner())
+  const signer = $computed(() => ethersProvider?.getSigner())
 
   const walletAddress = $computed(() => {
     if (!ethersProvider) return null
@@ -76,6 +77,7 @@ export const useWeb3Auth = () => {
 
   const getContractInfo = key => {
     const contractAddress = CHAIN_CONTRACT_MAP[key][chainId]
+    console.log('====> contractAddress, key, chainId :', contractAddress, key, chainId)
     const contractAbi = CHAIN_CONTRACT_ABI_MAP[key]
     return { contractAddress, contractAbi, chainId }
   }

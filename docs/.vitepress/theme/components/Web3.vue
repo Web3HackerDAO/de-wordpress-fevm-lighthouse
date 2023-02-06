@@ -14,8 +14,7 @@ let title = $ref(frontmatter.title || '')
 let description = $ref(frontmatter.description || '')
 let basicPrice = $ref(frontmatter.basicPrice || '')
 let inviteCommission = $ref(frontmatter.inviteCommission || '')
-const contentCID = $computed(() => frontmatter.contentCID)
-const imageCID = $computed(() => frontmatter.imageCID)
+const articleCid = $computed(() => frontmatter.articleCid)
 const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIxMmZkRTRBOEFhY0RCZWE3RWFkRGNFMGU1NkI0NTFDQzdlNTM2QjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2ODk1MTU2MTkwNiwibmFtZSI6IldlYjNWaXRlUHJlc3MifQ.yxdHbHZAjmjYgo2WL5G0vmRH5OdOEhvh9dWys2EVGzk'
 // const client = new NFTStorage({ token: import.meta.env.NFT_STORAGE_TOKEN })
 const client = new NFTStorage({ token })
@@ -28,6 +27,13 @@ const storeJson = async data => {
 
 
 let showMintNFTDialog = $ref(false)
+let nftBalance = $ref('')
+
+const updateBalance = async () => {
+  const contractReader = await initContract('SellX3')
+  nftBalance = await contractReader.balanceOf(walletAddress, frontmatter.tokenId)
+  console.log(`====> nftBalance :`, nftBalance, walletAddress)
+}
 const doMintNFT = async () => {
   showMintNFTDialog = true
   isLoading = true
@@ -39,27 +45,37 @@ const doMintNFT = async () => {
     amount: mintAmount,
     tokenId,
   }
+  let tx = ''
   try {
     const metadataCID = await storeJson(data)
-    console.log(`====> metadataCID :`, metadataCID)
     const value = parseEther('' + basicPrice).mul(mintAmount)
-    const tx = await contractWriter.mintNFT(tokenId, mintAmount, metadataCID, { value })
+    console.log(`====> frontmatter.tokenId, mintAmount, type, articleCid, metadataCID :`, frontmatter.tokenId, mintAmount, 'like', articleCid, metadataCID)
+    tx = await contractWriter.mintNFT(frontmatter.tokenId, mintAmount, 'like', articleCid, metadataCID, { value })
+    msg = `submit tx success: https://hyperspace.filfox.info/en/tx/${tx.hash}`
     const rz = await tx.wait()
-    console.log(`====> rz :`, rz)
+    msg = `mint success: https://hyperspace.filfox.info/en/tx/${tx.hash}`
+    await updateBalance()
   } catch (e) {
     console.log(`====> e :`, e)
     msg = e.data.message
   }
-  msg = `mint success, check it on OpenSea: https://testnets.opensea.io/assets/mumbai/0xfea51cf21b27f07b8078b19a7cdf61dc826ed453/1`
   isLoading = false
 }
 
+
+watchEffect(async () => {
+  if (!walletAddress) return
+  await updateBalance()
+})
 </script>
 
 <template>
   <div class="p-2 pt-6">
     <div v-if="connectedChain">
       <button type="button" class="btn-primary" @click="doMintNFT">Mint NFT</button>
+      <div class="p-2 text-lg font-medium">
+        Balance: {{ nftBalance }}
+      </div>
     </div>
     <button type="button" class="btn-primary" @click="doConnect" v-else>Connect Wallet</button>
   </div>

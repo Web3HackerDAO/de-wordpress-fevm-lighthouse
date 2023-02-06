@@ -134,7 +134,7 @@ export default defineConfig({
     ],
     footer: {
       message: '©2023 SellX3.com All rights reserved.',
-      copyright: 'Made with ❤️ by <a href="https://github.com/Web3HackerDAO" target="_blank">Web3HackerDAO</a>'
+      // copyright: 'Made with ❤️ by <a href="https://github.com/Web3HackerDAO" target="_blank">Web3HackerDAO</a>'
     },
     sidebar: {
       '/guide/': [{

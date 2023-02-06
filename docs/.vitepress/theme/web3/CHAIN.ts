@@ -60,7 +60,7 @@ export const CHAIN_MAP = {
 
 export const CHAIN_CONTRACT_MAP = {
   SellX3: {
-    '0xc45': '0x8fC379308CA230f922C50af7b17139E40c701e15',
+    '0xc45': '0xf93Ea4bF57ddC2818C6e5FA4739862189b17C382',
   },
 }
 

@@ -22,7 +22,7 @@ You can treat the NFT as your new book/course/shop/website/blog site. Whatever y
 ## Step. 4: Encrypted your whole content via `lighthouse` sdk and store on IPFS
 
 ```sh
-node generateEncryptedNovel.js
+name=santi2 node generateEncryptedNovel.js
 ```
 
 This command will encrypt your content with `lighthouse` and store them on to IPFS.

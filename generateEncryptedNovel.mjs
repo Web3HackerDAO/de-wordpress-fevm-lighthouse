@@ -76,7 +76,7 @@ const doApplyAC = async(cid, ac) =>{
 
 
 const initContract = async () => {
-  const contractAddress = '0x8fC379308CA230f922C50af7b17139E40c701e15'
+  const contractAddress = '0xf93Ea4bF57ddC2818C6e5FA4739862189b17C382'
   const abi = fs.readJsonSync('./docs/.vitepress/theme/web3/abis/SellX3.json')
   const signer = getSigner()
   return new ethers.Contract(contractAddress, abi, signer)

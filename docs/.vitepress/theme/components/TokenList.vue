@@ -23,6 +23,7 @@ let currentItem = $ref({})
 const doShowModal = item => {
   currentItem = item
   showModal = true
+  console.log('====> currentItem :', currentItem)
 }
 
 let jsonItems = $ref([])

@@ -127,7 +127,7 @@ export default defineConfig({
     },
     nav: [
       // { text: 'Discover', link: '/discover',  activeMatch: '/discover' },
-      { text: 'Blog', link: 'https://medium.com/@web3hackerdao' },
+      { text: '三体2', link: '/santi2/index',  activeMatch: '/santi2/' },
       { text: 'Guide', link: '/guide/getting-started',  activeMatch: '/guide' },
       { text: 'Pricing', link: '/pricing',  activeMatch: '/pricing' },
       { text: 'About', link: '/about',  activeMatch: '/about' },
@@ -136,7 +136,31 @@ export default defineConfig({
       message: '©2023 SellX3.com All rights reserved.',
       copyright: 'Made with ❤️ by <a href="https://github.com/Web3HackerDAO" target="_blank">Web3HackerDAO</a>'
     },
-    sidebar: [
+    sidebar: {
+      '/guide/': [{
+        text: 'Guide',
+        items: [
+          { text: 'Getting Started', link: '/guide/getting-started' },
+        ]
+      }],
+      '/santi2/': [{
+        text: '三体2: 黑暗森林',
+        items: [
+          { text: '01. 危机纪年第3年', link: '/santi2/01' },
+          { text: '02. 危饥纪年第8年', link: '/santi2/02' },
+          { text: '03. 危机纪年第12年', link: '/santi2/03' },
+        ]
+      }],
+      '/santi2-gating/': [{
+        text: '三体2: 黑暗森林',
+        items: [
+          { text: '01. 危机纪年第3年', link: '/santi2-gating/01' },
+          { text: '02. 危饥纪年第8年', link: '/santi2-gating/02' },
+          { text: '03. 危机纪年第12年', link: '/santi2-gating/03' },
+        ]
+      }],
+    },
+    sidebar2: [
       {
         text: 'Guide',
         items: [
@@ -145,7 +169,7 @@ export default defineConfig({
       }
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/Web3VitePress/Web3VitePress' },
+      { icon: 'github', link: 'https://github.com/Web3HackerDAO/de-wordpress-fevm-lighthouse' },
       { icon: 'twitter', link: 'https://twitter.com/Web3HackerDAO' },
       { icon: 'discord', link: 'https://discord.gg/wpc9ZP3bBG' },
     ],

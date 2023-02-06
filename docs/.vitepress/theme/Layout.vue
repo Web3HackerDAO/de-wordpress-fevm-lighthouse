@@ -11,6 +11,11 @@ const { Layout } = DefaultTheme
 
 <template>
   <Layout>
+    <template #doc-footer-before>
+      <ClientOnly>
+        <UnlockPageContent />
+      </ClientOnly>
+    </template>
     <template #aside-outline-after>
       <ClientOnly>
         <Web3 />

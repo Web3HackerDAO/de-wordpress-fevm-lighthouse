@@ -48,7 +48,7 @@ contract SellX3 is ERC1155, Ownable, Pausable, ERC1155Supply {
     mapping(address => uint256) public userTotalMintCountMap; // userAddress => userTotalAmount
     mapping(uint256 => string[]) public articleCIDArrMap; // blogId =>  itemsCID[], store all cid for every blogger's articleCIDs
 
-    function activateDealBySP(uint64 dealId) external {
+    function activateDeal(uint64 dealId) external {
         MarketTypes.GetDealDataCommitmentReturn memory commitmentRet = MarketAPI
             .getDealDataCommitment(dealId);
 
@@ -71,7 +71,7 @@ contract SellX3 is ERC1155, Ownable, Pausable, ERC1155Supply {
         deals[cidRaw].client = clientRet.client;
     }
 
-    function withdrawReward(bytes memory cidRaw) external {
+    function claimBuntry(bytes memory cidRaw) external {
         require(
             (deals[cidRaw].dealState == DealState.Active &&
                 SafeMath.div(
@@ -255,12 +255,28 @@ contract SellX3 is ERC1155, Ownable, Pausable, ERC1155Supply {
 
     function addArticle(
         uint256 blogId,
-        string memory articleCID
+        string memory articleCID,
+        bytes calldata cidRaw,
+        uint size
     ) public payable whenNotPaused {
         address createdBy = _msgSender();
         require(createdBy == ownerMap[blogId], "you are not the owner");
         require(msg.value >= ADD_ARTICLE_PRICE, "insufficient funds");
         articleCIDArrMap[blogId].push(articleCID);
+
+        Deal memory newDeal = Deal({
+            createdBy: msg.sender,
+            cidraw: cidRaw,
+            size: size,
+            storageFees: 0,
+            dealStartBlockStamp: 0,
+            dealDurationInDays: 180,
+            dealState: DealState.Created,
+            client: 0
+        });
+
+        deals[cidRaw] = newDeal;
+        storagePaymentBalanceMap[createdBy] += msg.value;
 
         emit AddArticle(blogId, createdBy, articleCID);
     }

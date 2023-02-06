@@ -16,7 +16,12 @@ const rpcUrl = 'https://api.hyperspace.node.glif.io/rpc/v1'
 
 const getSigner = () => {
   const privateKey = process.env.PRIVATE_KEY;
-  const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+  // const provider = new ethers.providers.JsonRpcProvider();
+   const provider = new ethers.providers.StaticJsonRpcProvider(rpcUrl, {
+        chainId: 3141,
+        name: 'Hyperspace'
+   });
+    
   const signer = new ethers.Wallet(privateKey, provider);
   return signer
 }
@@ -31,17 +36,21 @@ const sign_auth_message = async () => {
 }
 
 const doUploadEncrypted = async(text) =>{
-  const apiKey = process.env.LIGHTHOUSE_API_KEY;
-  const sig = await sign_auth_message();
-  const rz = await lighthouse.textUploadEncrypted(
-    text,
-    apiKey,
-    sig.publicKey,
-    sig.signedMessage
-  );
-  return {
-    cid: rz.data.Hash,
-    size: rz.data.Size
+  try{
+    const apiKey = process.env.LIGHTHOUSE_API_KEY;
+    const sig = await sign_auth_message();
+    const rz = await lighthouse.textUploadEncrypted(
+      text,
+      apiKey,
+      sig.publicKey,
+      sig.signedMessage
+    );
+    return {
+      cid: rz.data.Hash,
+      size: rz.data.Size
+    }
+  }catch(err){
+    console.log(`====> err :`, err, text)
   }
 }
 
@@ -75,6 +84,7 @@ const initContract = async () => {
 const main = async () => {
   const contractWriter = await initContract()
   const theDir = `./locked-content/${folder}`
+  const outputDir = `./docs/${folder}`
   const encryptedContentMetaFilePath = `${theDir}/encryptedContentMeta.json`
   let encryptedContentMeta = {}
   if (fs.pathExistsSync(encryptedContentMetaFilePath)) {
@@ -86,7 +96,8 @@ const main = async () => {
   let blogs = fs.readdirSync(theDir);
   blogs = blogs.filter(item => item.endsWith('.md'))
 
-  await Promise.all(blogs.map(async (blog) => {
+  for (const blog of blogs) {
+    console.log(`====> start deal with ${blog}`)
     const file = matter.read(`${theDir}/${blog}`, {
       excerpt: true,
       excerpt_separator: '',
@@ -104,6 +115,14 @@ const main = async () => {
     const originalContentEncodeBlob = await NFTStorage.encodeBlob(new Blob([moreContent]))
     const originalContentCid = originalContentEncodeBlob.cid.toString()
 
+    if (encryptedContentMeta[originalContentCid]) {
+      const oldMeta = encryptedContentMeta[originalContentCid]
+      if (oldMeta.excerpt === excerpt && oldMeta.size === size && oldMeta.requiredNFTCount === requiredNFTCount) {
+        console.log(`====> nothing to change`)
+        return
+      }
+    }
+   
      const accessControlConditions = [
       {
         id: 1,
@@ -124,7 +143,6 @@ const main = async () => {
     const rz = await doApplyAC(cid, accessControlConditions)
     console.log(`====> doApplyAC rz :`, rz)
 
-    
     const jsonData = {
       originalContentCid,
       encryptedContentCid,
@@ -139,14 +157,23 @@ const main = async () => {
     let articleCid = await client.storeBlob(blob)
     articleCid = `ipfs://${articleCid}`
     console.log(`====> 4. addArticle :`, articleCid)
-    if (encryptedContentMeta[articleCid]) {
-      return
-    }
     const value = ethers.utils.parseEther('0.0001')
     // await contractWriter.addArticle(tokenId, articleCid, cidRaw, size, {value})
-    await contractWriter.addArticle(tokenId, articleCid, { value })
-    encryptedContentMeta[articleCid] = jsonData
-  }));
+    const tx = await contractWriter.addArticle(tokenId, articleCid, { value })
+    const rc = await tx.wait()
+    jsonData.articleCid = articleCid
+    jsonData.txHash = tx.hash
+    encryptedContentMeta[originalContentCid] = jsonData
+
+    file.data.tokenId = tokenId
+    file.data.contractAddress = contractAddress
+    file.data.basicPrice = nftData.basicPrice
+    file.data.articleCid = articleCid
+    // file.data.inviteCommission = nftData.inviteCommission
+    file.data.encryptedContentCid = encryptedContentCid
+    file.content = file.excerpt
+    fs.outputFileSync(`${outputDir}/${blog}`, file.stringify())
+  }
 
   fs.writeJsonSync(encryptedContentMetaFilePath, encryptedContentMeta, {spaces: 2});
 }

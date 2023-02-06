@@ -67,6 +67,8 @@ export const useWeb3Auth = () => {
     )
   })
 
+  const signer = $computed(() => ethersProvider.getSigner())
+
   const walletAddress = $computed(() => {
     if (!ethersProvider) return null
     return ethersProvider.provider.selectedAddress
@@ -84,7 +86,6 @@ export const useWeb3Auth = () => {
     if (!isWrite)
       return new ethers.Contract(contractAddress, contractAbi, ethersProvider);
 
-    const signer = ethersProvider.getSigner();
     return new ethers.Contract(contractAddress, contractAbi, signer);
   };
 
@@ -106,6 +107,7 @@ export const useWeb3Auth = () => {
     connectingWallet,
     settingChain,
     walletAddress,
+    signer,
     doConnect,
     disconnectConnectedWallet,
     initContract,

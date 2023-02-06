@@ -6,12 +6,16 @@ Every blog post/page of your site can be setup a `pay` price that only user mint
 
 ## Step. 1: Connect Wallet
 
+<ClientOnly>
 <BtnConnectWallet />
+</ClientOnly>
 
 ## Step. 2: Create your new NFT as your creation
 
 You can treat the NFT as your new book/course/shop/website/blog site. Whatever you want!
+<ClientOnly>
 <BtnNewNovel />
+</ClientOnly>
 
 ## Step. 3: Write your super greate content/item in locked-content folder
 

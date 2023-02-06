@@ -33,9 +33,9 @@ export default defineConfig({
     },
     plugins: [
       VueMacros(),
-      nodePolyfills({
-        include: ['node_modules/**/*.js', new RegExp('node_modules/.vite/.*js')],
-      }),
+      // nodePolyfills({
+      //   include: ['node_modules/**/*.js', new RegExp('node_modules/.vite/.*js')],
+      // }),
       AutoImport({
         imports: [
           'vue',

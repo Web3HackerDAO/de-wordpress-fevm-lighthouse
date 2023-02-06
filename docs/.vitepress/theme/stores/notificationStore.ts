@@ -1,5 +1,4 @@
-import { findIndex } from 'lodash'
-import { defineStore } from 'pinia'
+import _ from 'lodash'
 interface MessageItem { title: string; timeout?: number; type?: string; _id?: number }
 
 const timerMap = {}
@@ -18,7 +17,7 @@ export const notificationStore = defineStore('notificationStore', () => {
   }
 
   const removeItem = (item: MessageItem) => {
-    const index = findIndex(items, _item => item._id === _item._id)
+    const index = _.findIndex(items, _item => item._id === _item._id)
     if (index === -1) return
     items.splice(index, 1)
     if (timerMap[item._id]) {

@@ -82,7 +82,7 @@ contract SellX3 is ERC1155, Ownable, Pausable, ERC1155Supply {
                     1 days
                 ) >=
                 deals[cidRaw].dealDurationInDays),
-            "store not exipred yet"
+            "store not expired yet"
         );
 
         bytes memory emptyParams = "";

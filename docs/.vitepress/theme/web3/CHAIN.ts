@@ -1,12 +1,12 @@
 import SellX3 from './abis/SellX3.json'
 export const CHAIN_MAP = {
-  '0x5': {
-    chainId: '0x5',
-    chainName: 'Goerli Test Network',
-    blockExplorerUrls: ['https://goerli.etherscan.io'],
-    nativeCurrency: { name: 'GeorliETH', symbol: 'gETH', decimals: 18 },
-    rpcUrls: ['https://goerli.infura.io/v3/'],
-  },
+  // '0x5': {
+  //   chainId: '0x5',
+  //   chainName: 'Goerli Test Network',
+  //   blockExplorerUrls: ['https://goerli.etherscan.io'],
+  //   nativeCurrency: { name: 'GeorliETH', symbol: 'gETH', decimals: 18 },
+  //   rpcUrls: ['https://goerli.infura.io/v3/'],
+  // },
   '0x61': {
     chainId: '0x61',
     chainName: 'BSC testnet',
@@ -46,7 +46,7 @@ export const CHAIN_MAP = {
       "https://hyperspace.filfox.info/en"
     ],
     "chainId": "0xc45",
-    "chainName": "Filecoin - hyperspace testnet",
+    "chainName": "Hyperspace",
     "nativeCurrency": {
       "decimals": 18,
       "name": "tFIL",
@@ -54,7 +54,6 @@ export const CHAIN_MAP = {
     },
     "rpcUrls": [
       "https://api.hyperspace.node.glif.io/rpc/v1",
-      "https://rpc.ankr.com/filecoin_testnet"
     ]
   },
 }

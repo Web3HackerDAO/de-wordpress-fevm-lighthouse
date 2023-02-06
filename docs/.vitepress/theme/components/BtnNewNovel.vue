@@ -61,13 +61,20 @@ const doCreateNewNovel = async () => {
 
   let tokenId = ''
   const contractWriter = await initContract('SellX3', true)
-  const value = parseEther('0.01')
+  const value = parseEther('0.0001')
+  const blogInfoArr = [
+    name,
+    description,
+    image,
+    metadataCID,
+  ]
   try {
-    const tx = await contractWriter.addBook(_basicPrice, _inviteCommission, metadataCID, { value })
+    const tx = await contractWriter.upsertBlog(blogInfoArr, { value })
     const rc = await tx.wait()
-    const event = rc.events.find(event => event.event === 'AddBook')
-    const rz = event.args
-    tokenId = rz.tokenId.toString()
+    console.log(`====> rc :`, rc)
+    // const event = rc.events.find(event => event.event === 'upsertBlog')
+    // const rz = event.args
+    // tokenId = rz[0].toString()
   }
   catch (err) {
     console.log(`====> err :`, err)
@@ -88,13 +95,13 @@ let items = $ref([])
 
 const getTokenList = async () => {
   const contractReader = await initContract('SellX3')
-  const rz = await contractReader.getTokenList(0, 100)
+  const rz = await contractReader.getBlogList(0, 100)
   console.log(`====> rz :`, rz)
   items = rz.tokenURIs.map((tokenURI, index) => {
     return {
       tokenId: index + '',
       tokenURI,
-      totalMintCount: rz.totalMintCounts[index],
+      totalMintCount: rz.totalSupplys[index],
     }
   })
 }
@@ -167,7 +174,7 @@ watchEffect(async () => {
               <label for="cover-photo" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Cover photo</label>
               <div class="mt-1 sm:col-span-2 sm:mt-0">
                 <div class="overflow-hidden rounded-lg aspect-w-2 aspect-h-3 sm:col-span-4 lg:col-span-5">
-                  <FileUploaderBanner v-model="image" class="h-full" />
+                  <FileUploaderBanner v-model="image" class="max-w-lg" />
                 </div>
               </div>
             </div>

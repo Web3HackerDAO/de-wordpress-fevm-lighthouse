@@ -14,6 +14,7 @@ specifiers:
   ethers: ^5.7.2
   filereader: ^0.10.3
   gray-matter: ^4.0.3
+  highlight.js: ^11.7.0
   lodash: ^4.17.21
   markdown-it: ^13.0.1
   nft.storage: ^7.0.0
@@ -40,6 +41,7 @@ dependencies:
   '@web3-onboard/core': 2.14.1
   '@web3-onboard/injected-wallets': 2.6.2
   '@web3-onboard/vue': 2.5.1_vue@3.2.45
+  highlight.js: 11.7.0
   lodash: 4.17.21
   markdown-it: 13.0.1
   nft.storage: 7.0.0

@@ -3,7 +3,7 @@ import { useWeb3Auth } from '../composables/useWeb3Auth'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { useNFTStorage } from '../composables/useNFTStorage'
 import Markdown from 'vue3-markdown-it';
-
+import 'highlight.js/styles/monokai.css';
 
 const { getContractInfo } = $(useWeb3Auth())
 
@@ -42,7 +42,7 @@ watchEffect(async () => {
 })
 
 const mdSource = $computed(() => {
-  const { contractAddress, chainId } = getContractInfo('Web3VitePress')
+  const { contractAddress, chainId } = getContractInfo('SellX3')
   return `
 \`\`\`js
 exports.default = {
@@ -91,7 +91,6 @@ exports.default = {
       </li>
     </ul>
     <DialogWide :show="showModal" @close="showModal = false" class="text-black">
-      sss
       <Markdown :source="mdSource" />
     </DialogWide>
   </div>

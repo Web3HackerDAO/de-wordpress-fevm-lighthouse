@@ -35,6 +35,13 @@ init({
       rpcUrl: 'http://127.0.0.1:8545/',
       blockExplorerUrl: 'http://127.0.0.1:8545/'
     },
+    {
+      id: '0xc45',
+      token: 'tFIL',
+      label: 'Hyperspace',
+      rpcUrl: 'https://api.hyperspace.node.glif.io/rpc/v1',
+      blockExplorerUrl: 'https://hyperspace.filfox.info/en'
+    },
   ]
 })
 

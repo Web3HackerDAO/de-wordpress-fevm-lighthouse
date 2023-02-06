@@ -48,7 +48,7 @@ contract SellX3 is ERC1155, Ownable, Pausable, ERC1155Supply {
     mapping(address => uint256) public userTotalMintCountMap; // userAddress => userTotalAmount
     mapping(uint256 => string[]) public articleCIDArrMap; // blogId =>  itemsCID[], store all cid for every blogger's articleCIDs
 
-    function activateDeal(uint64 dealId) external {
+    function activateDeal(uint64 dealId) public {
         MarketTypes.GetDealDataCommitmentReturn memory commitmentRet = MarketAPI
             .getDealDataCommitment(dealId);
 
@@ -71,7 +71,7 @@ contract SellX3 is ERC1155, Ownable, Pausable, ERC1155Supply {
         deals[cidRaw].client = clientRet.client;
     }
 
-    function claimBuntry(bytes memory cidRaw) external {
+    function claimBuntry(bytes memory cidRaw) public {
         require(
             (deals[cidRaw].dealState == DealState.Active &&
                 SafeMath.div(

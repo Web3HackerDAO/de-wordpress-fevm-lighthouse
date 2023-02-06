@@ -22,7 +22,7 @@ export default {
     }
   },
   vue: {
-    reactivityTransform: true
+    reactivityTransform:  path.resolve(__dirname, 'theme'),
   },
   vite: {
     define: {

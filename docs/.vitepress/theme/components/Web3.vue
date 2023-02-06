@@ -5,7 +5,7 @@ import DialogWide from './DialogWide.vue'
 import { NFTStorage, Blob } from 'nft.storage'
 
 const { frontmatter } = $(useData())
-const { doConnect, connectedChain, initContract, walletAddress, parseEther } = $(useWeb3Auth())
+const { doConnect, connectedChain, initContract, walletAddress, parseEther, getContractInfo } = $(useWeb3Auth())
 
 let msg = $ref('')
 let showCreateTokenDialog = $ref(false)
@@ -13,6 +13,7 @@ let isLoading = $ref(false)
 let title = $ref(frontmatter.title || '')
 let description = $ref(frontmatter.description || '')
 let basicPrice = $ref(frontmatter.basicPrice || '')
+let inviteCommission = $ref(frontmatter.inviteCommission || '')
 const contentCID = $computed(() => frontmatter.contentCID)
 const imageCID = $computed(() => frontmatter.imageCID)
 const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIxMmZkRTRBOEFhY0RCZWE3RWFkRGNFMGU1NkI0NTFDQzdlNTM2QjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2ODk1MTU2MTkwNiwibmFtZSI6IldlYjNWaXRlUHJlc3MifQ.yxdHbHZAjmjYgo2WL5G0vmRH5OdOEhvh9dWys2EVGzk'
@@ -25,62 +26,31 @@ const storeJson = async data => {
   }))
 }
 
-const doCreateToken = async () => {
-  let metadataCID = ''
-  isLoading = true
-  const metadata = {
-    name: title,
-    description,
-    image: imageCID,
-    properties: {
-      createdBy: walletAddress,
-      contentCID,
-    }
-  }
-  metadataCID = await storeJson(metadata)
-
-  const contractWriter = initContract('Web3VitePress', true)
-  const value = parseEther('0.0001')
-  const nftInfoArr = [
-    title,
-    description,
-    imageCID,
-    metadataCID,
-  ]
-  const tx = await contractWriter.upsertBlog(nftInfoArr, { value })
-  const rc = await tx.wait()
-  console.log(`====> rc :`, rc)
-  msg = `create blog, pls check tx: https://explorer.glif.io/wallaby/tx/${tx.hash}`
-  isLoading = false
-  // showCreateTokenDialog = false
-}
-
-const canCreateToken = $computed(() => !frontmatter.tokenId)
 
 let showMintNFTDialog = $ref(false)
 const doMintNFT = async () => {
   showMintNFTDialog = true
   isLoading = true
-  // bafkreiapgycwszlvazlidzbbl6vkatxdikswow5ngcbbnz2seu42m5tbaq
-  const blogId = '0'
-  const amount = 1
-  const mintType = 'comment'
-  const articleCID = 'ipfs://bafkreiex7aahucycag35k7ejx2vnqpl7teda4jrjkhwvga4ttgljqrvn64'
+  const tokenId = 1
+  const mintAmount = 1
   const contractWriter = await initContract('Web3VitePress', true)
   const data = {
     author: walletAddress,
-    blogId, amount, mintType, articleCID
+    amount: mintAmount,
+    tokenId,
   }
   try {
-    const mintMetadataCID = await storeJson(data)
-    const value = parseEther('' + basicPrice).mul(amount)
-    const tx = await contractWriter.mintNFT(blogId, amount, mintType, articleCID, mintMetadataCID, { value })
-    const rc = await tx.wait()
-    console.log(`====> rc :`, rc)
-    msg = `mint nft success, pls check tx: https://explorer.glif.io/wallaby/tx/${tx.hash}`
+    const metadataCID = await storeJson(data)
+    console.log(`====> metadataCID :`, metadataCID)
+    const value = parseEther('' + basicPrice).mul(mintAmount)
+    const tx = await contractWriter.mintNFT(tokenId, mintAmount, metadataCID, { value })
+    const rz = await tx.wait()
+    console.log(`====> rz :`, rz)
   } catch (e) {
+    console.log(`====> e :`, e)
     msg = e.data.message
   }
+  msg = `mint success, check it on OpenSea: https://testnets.opensea.io/assets/mumbai/0xfea51cf21b27f07b8078b19a7cdf61dc826ed453/1`
   isLoading = false
 }
 
@@ -89,7 +59,6 @@ const doMintNFT = async () => {
 <template>
   <div class="p-2 pt-6">
     <div v-if="connectedChain">
-      <button type="button" class="mb-2 btn-primary" @click="showCreateTokenDialog = true">Create Blog</button>
       <button type="button" class="btn-primary" @click="doMintNFT">Mint NFT</button>
     </div>
     <button type="button" class="btn-primary" @click="doConnect" v-else>Connect Wallet</button>
@@ -117,6 +86,20 @@ const doMintNFT = async () => {
               <div class="mt-1">
                 <textarea id="description" v-model="description" name="description" rows="2" class="block w-full p-4 bg-white border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
               </div>
+            </div>
+            <div class="sm:col-span-6">
+              <label for="basicPrice" class="block font-medium text-gray-700"> Basic Price </label>
+              <div class="mt-1">
+                <input id="basicPrice" v-model="basicPrice" type="text" name="basicPrice" autocomplete="basicPrice" class="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+              </div>
+              <p class="mt-2 text-gray-400">This is the price for your reader to mint NFT</p>
+            </div>
+            <div class="sm:col-span-6">
+              <label for="inviteCommission" class="block font-medium text-gray-700">Invite Commission </label>
+              <div class="mt-1">
+                <input id="inviteCommission" v-model="inviteCommission" type="text" name="inviteCommission" autocomplete="inviteCommission" class="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+              </div>
+              <p class="mt-2 text-gray-400">Anyone invite new reader for you will get the commission forever for the member's any payment</p>
             </div>
           </div>
         </div>

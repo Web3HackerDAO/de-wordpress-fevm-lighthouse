@@ -1,9 +1,9 @@
 exports.default = {
-  contractAddress: '0x8fC379308CA230f922C50af7b17139E40c701e15',
-  tokenId: '2',
-  name: 'a course',
+  contractAddress: '0xf93Ea4bF57ddC2818C6e5FA4739862189b17C382',
+  tokenId: '1',
+  name: 'the startup',
   chainId: '0xc45',
   basicPrice: '0.01',
-  description: `a course`,
-  image: 'ipfs://bafybeigjgavxr7t2mtzw7f5zkmigzinwos5ngixfk3lwopnj6ltr555opq'
+  description: `the story about my web3 startup `,
+  image: 'ipfs://bafybeihnvn67kgboioq64gkd3dowmxgsf2ziae7k56d5jqzqes5pyfgb4q'
 }

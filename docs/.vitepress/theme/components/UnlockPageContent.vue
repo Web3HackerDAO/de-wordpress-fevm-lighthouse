@@ -1,6 +1,5 @@
 <script setup>
 import { useData } from 'vitepress'
-import LitJsSdk from '@lit-protocol/sdk-browser'
 
 import Markdown from 'vue3-markdown-it';
 import { useWeb3Auth } from '../composables/useWeb3Auth'

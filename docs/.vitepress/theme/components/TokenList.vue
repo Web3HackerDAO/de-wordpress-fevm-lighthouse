@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useWeb3Auth } from '../composables/useWeb3Auth'
-import { watchEffect } from 'vue'
-import { CheckCircleIcon, ChevronRightIcon, EnvelopeIcon } from '@heroicons/vue/20/solid'
+import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { useNFTStorage } from '../composables/useNFTStorage'
 import Markdown from 'vue3-markdown-it';
 
@@ -92,6 +91,7 @@ exports.default = {
       </li>
     </ul>
     <DialogWide :show="showModal" @close="showModal = false" class="text-black">
+      sss
       <Markdown :source="mdSource" />
     </DialogWide>
   </div>

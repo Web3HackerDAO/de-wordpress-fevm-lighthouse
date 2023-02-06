@@ -50,6 +50,7 @@ const resetStatus = () => {
   isLoading = false
 }
 </script>
+
 <template>
   <div class="" v-bind="$attrs">
     <DropZone v-slot="{ dropZoneActive }" class="h-full drop-area" @files-dropped="addFilesAndStartUpload">

@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import { CHAIN_CONTRACT_MAP, CHAIN_CONTRACT_ABI_MAP } from '../web3/CHAIN'
 import { defaultChainId as chainId } from '../const.js'
 
-console.log('====> chainId :', chainId)
+// console.log('====> chainId :', chainId)
 // const chainId = 31415
 init({
   wallets: [injectedModule()],

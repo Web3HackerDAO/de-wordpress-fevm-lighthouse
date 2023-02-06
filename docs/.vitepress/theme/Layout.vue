@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
 import Web3 from './components/Web3.vue'
 import Slogan from './components/Slogan.vue'

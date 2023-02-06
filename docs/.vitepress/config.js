@@ -1,12 +1,14 @@
 import path from 'path'
 import Icons from 'unplugin-icons/vite'
+import { defineConfig } from 'vitepress'
 import IconsResolver from 'unplugin-icons/resolver'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { HeadlessUiResolver } from 'unplugin-vue-components/resolvers'
 import nodePolyfills from 'rollup-plugin-polyfill-node'
-
-export default {
+import VueMacros from 'unplugin-vue-macros/vite'
+import Vue from '@vitejs/plugin-vue'
+export default defineConfig({
   title: 'SellX3',
   description: 'Buidlers now can Sell anything in Web3 Verse with easy and freedom',
   locales: {
@@ -22,7 +24,7 @@ export default {
     }
   },
   vue: {
-    reactivityTransform:  path.resolve(__dirname, 'theme'),
+    reactivityTransform: path.resolve(__dirname, 'theme'),
   },
   vite: {
     define: {
@@ -30,8 +32,73 @@ export default {
       global: {},
     },
     plugins: [
+      VueMacros(),
       nodePolyfills({
         include: ['node_modules/**/*.js', new RegExp('node_modules/.vite/.*js')],
+      }),
+      AutoImport({
+        imports: [
+          'vue',
+          'vue/macros',
+          'vue-router',
+          'vue-i18n',
+          '@vueuse/head',
+          '@vueuse/core',
+          {
+            'lodash': [
+              'isEqual',
+              'uniq',
+              'random',
+              'remove',
+              'merge',
+              'forEach',
+              'get',
+              'reverse',
+              'filter',
+              'upperFirst',
+              'take',
+              'shuffle',
+            ],
+            'pinia': [
+              'acceptHMRUpdate',
+              'defineStore',
+              'storeToRefs',
+            ],
+            'villus': [
+              'useQuery',
+            ],
+            'graphql-tag': [
+              'gql',
+            ],
+            '@headlessui/vue': [
+              'TransitionRoot',
+              'TransitionChild',
+              'Dialog',
+              'DialogPanel',
+              'DialogOverlay',
+              'DialogTitle',
+              'DialogDescription',
+              'Menu',
+              'MenuButton',
+              'MenuItem',
+              'MenuItems',
+              'TabGroup',
+              'TabList',
+              'Tab',
+              'TabPanels',
+              'TabPanel',
+              'Combobox',
+              'ComboboxInput',
+              'ComboboxButton',
+              'ComboboxOptions',
+              'ComboboxOption',
+            ],
+          },
+        ],
+        dirs: [
+        ],
+        dts: '../auto-imports.d.ts',
+        vueTemplate: true,
       }),
       Components({
         resolvers: [
@@ -112,4 +179,4 @@ export default {
       }
     }
   }
-}
+})

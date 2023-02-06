@@ -12,13 +12,19 @@ const { storeJson, getJson } = $(useNFTStorage())
 const { doConnect, walletAddress, connectingWallet, disconnectConnectedWallet, settingChain, parseEther, signer } = $(useWeb3Auth())
 
 const { frontmatter } = $(useData())
-const { requiredNFTCount, encryptedContentCid, contractAddress, tokenId, articleCid } = frontmatter
+const requiredNFTCount = $computed(() => frontmatter.requiredNFTCount)
+const encryptedContentCid = $computed(() => frontmatter.encryptedContentCid)
+const contractAddress = $computed(() => frontmatter.contractAddress)
+const tokenId = $computed(() => frontmatter.tokenId)
+const articleCid = $computed(() => frontmatter.articleCid)
 
 let isLoading = $ref(false)
 let error = $ref('')
 let msg = $ref('')
 const chain = 'Hyperspace'
-let source = $ref('')
+
+const decryptedContentMap = $ref({})
+const decryptedContent = $computed(() => decryptedContentMap[articleCid])
 
 const getSignature = async () => {
   const publicKey = await signer.getAddress()
@@ -39,11 +45,11 @@ const doDecryptString = async (cid) => {
   )
   const fileType = 'text/plain'
   const decrypted = await lighthouse.decryptFile(cid, keyObject.data.key, fileType)
-  source = await decrypted.text()
+  decryptedContentMap[articleCid] = await decrypted.text()
 }
 
 
-let isUnlocked = $ref(false)
+let isUnlocked = $computed(() => decryptedContentMap[articleCid] || false)
 let isUnlocking = $ref(false)
 const doUnlock = async () => {
   if (isUnlocking) return
@@ -51,18 +57,18 @@ const doUnlock = async () => {
 
   try {
     await doDecryptString(encryptedContentCid)
-    isUnlocked = true
   } catch (e) {
     console.log(`====> e :`, e)
     error = e.message
   }
   isUnlocking = false
 }
+
 </script>
 
 <template>
   <div v-if="$frontmatter.encryptedContentCid">
-    <Markdown :source="source" v-if="isUnlocked" />
+    <Markdown :source="decryptedContent" v-if="isUnlocked" />
     <div class="bg-gray-400 rounded-md dark:bg-gray-200" v-else>
       <div v-if="isUnlocking">
         <Loading v-if="isUnlocking" class="h-60" />

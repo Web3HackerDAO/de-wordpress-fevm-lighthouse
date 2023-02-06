@@ -27,7 +27,7 @@ const storeJson = async data => {
 
 
 let showMintNFTDialog = $ref(false)
-let nftBalance = $ref('')
+let nftBalance = $ref('0')
 
 const updateBalance = async () => {
   const contractReader = await initContract('SellX3')
@@ -72,9 +72,11 @@ watchEffect(async () => {
 <template>
   <div class="p-2 pt-6">
     <div v-if="connectedChain">
-      <button type="button" class="btn-primary" @click="doMintNFT">Mint NFT</button>
-      <div class="p-2 text-lg font-medium">
-        Balance: {{ nftBalance }}
+      <div v-if="$frontmatter.tokenId">
+        <button type="button" class="btn-primary" @click="doMintNFT">Mint NFT</button>
+        <div class="p-2 text-lg font-medium">
+          Balance: {{ nftBalance }}
+        </div>
       </div>
     </div>
     <button type="button" class="btn-primary" @click="doConnect" v-else>Connect Wallet</button>

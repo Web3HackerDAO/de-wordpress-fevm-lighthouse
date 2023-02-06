@@ -8,24 +8,38 @@ Every blog post/page of your site can be setup a `pay` price that only user mint
 
 <BtnConnectWallet />
 
-## Step. 2: Create your new novel
+## Step. 2: Create your new NFT as your creation
 
+You can treat the NFT as your new book/course/shop/website/blog site. Whatever you want!
 <BtnNewNovel />
 
-## Step. 3: Write your novel chapter in locked-content folder
+## Step. 3: Write your super greate content/item in locked-content folder
 
-## Step. 4: Encrypted your whole novel chapters via web3 and store on IPFS
+## Step. 4: Encrypted your whole content via `lighthouse` sdk and store on IPFS
 
 ```sh
 node generateEncryptedNovel.js
 ```
 
-This command will encrypt your novel and store them on to IPFS.
+This command will encrypt your content with `lighthouse` and store them on to IPFS.
 
-All metadata will auto generate and put them into the docs/$yourNovelFolder, no-worry! As it only include the expert part!
+All metadata will auto generate and put them into the docs/$yourNovelFolder.
 
-The docs folder will be publish after the vitepress deployed.
+No-worry!
 
-## Step. 5: Deploy your vitepress site and with token gating feature
+As it only include the expert part!
 
-## Step. 6: Your reader can mint the novel's NFT to support you that can unlock your novel chapters
+The docs folder will be publish after your site deployed.
+
+## Step. 5: Deploy your site and with token gating feature
+
+## Step. 6: Your reader can mint the NFT to support you that can decrypt your content
+
+As this just use text content as demo, later we will build more themes(like wordpress) that the creator can pick different theme as different usecase.
+
+It can be:
+
+* A De-shopping site
+* A course site sell source on FEVM
+* A novel site sell novel on FEVM
+* A photot site sell greate pictures on FEVM

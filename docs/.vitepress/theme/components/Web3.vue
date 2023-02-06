@@ -33,7 +33,7 @@ const doMintNFT = async () => {
   isLoading = true
   const tokenId = 1
   const mintAmount = 1
-  const contractWriter = await initContract('Web3VitePress', true)
+  const contractWriter = await initContract('SellX3', true)
   const data = {
     author: walletAddress,
     amount: mintAmount,

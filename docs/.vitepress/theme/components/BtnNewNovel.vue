@@ -58,10 +58,9 @@ const doCreateNewNovel = async () => {
     properties: _properties,
   }
   const metadataCID = await storeJson(metadata)
-  // const metadataCID = 'ipfs://bafkreigsvmzdgs3jgfcfps5rikzlvw7h2r3c73jq356levy6zgp75vsowm'
 
   let tokenId = ''
-  const contractWriter = await initContract('Web3VitePress', true)
+  const contractWriter = await initContract('SellX3', true)
   const value = parseEther('0.01')
   try {
     const tx = await contractWriter.addBook(_basicPrice, _inviteCommission, metadataCID, { value })
@@ -88,7 +87,7 @@ const doCreateNewNovel = async () => {
 let items = $ref([])
 
 const getTokenList = async () => {
-  const contractReader = await initContract('Web3VitePress')
+  const contractReader = await initContract('SellX3')
   const rz = await contractReader.getTokenList(0, 100)
   console.log(`====> rz :`, rz)
   items = rz.tokenURIs.map((tokenURI, index) => {
@@ -113,7 +112,7 @@ watchEffect(async () => {
       Connect wallet first!
     </div>
     <div v-else>
-      <button type="button" class="mb-4 btn-primary" @click="showModal = true">New Novel</button>
+      <button type="button" class="mb-4 btn-primary" @click="showModal = true">New NFT as your creation</button>
       <TokenList :items="items" />
     </div>
   </div>
@@ -160,7 +159,7 @@ watchEffect(async () => {
               <label for="description" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Description</label>
               <div class="mt-1 sm:col-span-2 sm:mt-0">
                 <textarea id="description" name="description" v-model="description" rows="5" class="block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
-                <p class="mt-2 text-sm text-gray-500">Write a few sentences about your new novel.</p>
+                <p class="mt-2 text-sm text-gray-500">Write a few sentences about your new NFT.</p>
               </div>
             </div>
 

@@ -1,1 +1,1 @@
-export const defaultChainId = '0x13881'
+export const defaultChainId = '0xc45'

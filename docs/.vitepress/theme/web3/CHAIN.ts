@@ -1,4 +1,4 @@
-import Web3VitePress from './abis/Web3VitePress.json'
+import SellX3 from './abis/SellX3.json'
 export const CHAIN_MAP = {
   '0x5': {
     chainId: '0x5',
@@ -41,16 +41,30 @@ export const CHAIN_MAP = {
       'https://matic-testnet-archive-rpc.bwarelabs.com',
     ],
   },
+  "0xc45": {
+    "blockExplorerUrls": [
+      "https://hyperspace.filfox.info/en"
+    ],
+    "chainId": "0xc45",
+    "chainName": "Filecoin - hyperspace testnet",
+    "nativeCurrency": {
+      "decimals": 18,
+      "name": "tFIL",
+      "symbol": "tFIL"
+    },
+    "rpcUrls": [
+      "https://api.hyperspace.node.glif.io/rpc/v1",
+      "https://rpc.ankr.com/filecoin_testnet"
+    ]
+  },
 }
 
 export const CHAIN_CONTRACT_MAP = {
-  Web3VitePress: {
-    '0x7ab7': '0xC7ce19577C040f9807f0Fdf1C7c64eEea5c137bB',
-    '0x7a69': '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-    '0x13881': '0xfEa51Cf21B27f07B8078B19a7cDf61dC826ED453',
+  SellX3: {
+    '0xc45': '0x8fC379308CA230f922C50af7b17139E40c701e15',
   },
 }
 
 export const CHAIN_CONTRACT_ABI_MAP = {
-  Web3VitePress
+  SellX3
 }
